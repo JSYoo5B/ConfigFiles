@@ -4,8 +4,11 @@
 
 ## Windows 10
 Change "Caps Lock" key's keycode to "LCTRL"
+
 Removing not used apps from windows 10 defaulf apps
+
 Remove "OneDrive" folder from File Explorer's sidebar
+
 Remove "Quick Access" folder from File Explorer's sidebar
 
 ## Sublime Text 3
