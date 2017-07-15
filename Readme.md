@@ -23,3 +23,7 @@ Change default key binding from macOS's cmd-based keymap to ctrl-based keymap
 
 ## VIM
 Installation of VUNDLE plugin and some vimrc configuration
+
+## UE4
+Change default key binding from macOS's cmd-based keymap to ctrl-based keymap 
+(not fully implemented for Home, End, PgUp, PgDn, etc...)
