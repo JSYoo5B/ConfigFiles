@@ -1,2 +1,4 @@
+# Platform related ignore files
+desktop.ini
 Icon
 .DS_Store
