@@ -1,81 +1,175 @@
-" All system-wide defaults are set in $VIMRUNTIME/debian.vim and sourced by
-" the call to :runtime you can find below.  If you wish to change any of those
-" settings, you should do it in this file (/etc/vim/vimrc), since debian.vim
-" will be overwritten everytime an upgrade of the vim packages is performed.
-" It is recommended to make changes after sourcing debian.vim since it alters
-" the value of the 'compatible' option.
+"===============================================================================
+"= Set system runtime
+"===============================================================================
+if has('win32') || has('win64') || has('win16')
+	" Windows(GVIM) system runtime startup code
+	source $VIMRUNTIME/vimrc_example.vim
+	behave xterm
+else
+	try
+		let os_str = substitute(system('uname'), '\n', '', '')
+	catch
+		let os_str = 'Unknown'
+	endtry
+	if has('mac') || os_str == 'Darwin'
+		"MacOS system runtime startup code
+		set modelines=0		" CVE-2007-2438
+		set nocompatible	" Use Vim defaults instead of 100% vi compatibility
+		set backspace=2		" More powerful backspacing
+		" Don't write backup file if vim is being called by "crontab -e"
+		au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
+		" Don't write backup file if vim is being called by "chpass"
+		au BufWrite /private/etc/pw.* set nowritebackup nobackup
+		let skip_defaults_vim=1
+	elseif has('linux') || os_str == 'Linux'
+		runtime! debian.vim
+		" TODO: Write linux system runtime startup code for other distro
+	elseif has('unix')
+		" TODO: Write unix system runtime startup code
+	endif
+	unlet os_str
+endif
 
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages available in Debian.
-runtime! debian.vim
-
-" Vim will load $VIMRUNTIME/defaults.vim if the user does not have a vimrc.
-" This happens after /etc/vim/vimrc(.local) are loaded, so it will override
-" any settings in these files.
-" If you don't want that to happen, uncomment the below line to prevent
-" defaults.vim from being loaded.
-" let g:skip_defaults_vim = 1
-
-" Uncomment the next line to make Vim more Vi-compatible
-" NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
-" options, so any other options should be set AFTER setting 'compatible'.
-"set compatible
-
-" Vim5 and later versions support syntax highlighting. Uncommenting the next
-" line enables syntax highlighting by default.
+"===============================================================================
+"= Enable syntax highlight
+"===============================================================================
 if has("syntax")
 	syntax on
 endif
 
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
-"set background=dark
-
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
-"if has("autocmd")
-"  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-"endif
-
-" Uncomment the following to have Vim load indentation rules and plugins
-" according to the detected filetype.
-"if has("autocmd")
-"  filetype plugin indent on
-"endif
-
-" The following are commented out as they cause vim to behave a lot
-" differently from regular Vi. They are highly recommended though.
-"set showcmd		" Show (partial) command in status line.
-"set showmatch		" Show matching brackets.
-"set ignorecase		" Do case insensitive matching
-"set smartcase		" Do smart case matching
-"set incsearch		" Incremental search
-"set autowrite		" Automatically save before commands like :next and :make
-"set hidden		" Hide buffers when they are abandoned
-"set mouse=a		" Enable mouse usage (all modes)
-
-" Source a global configuration file if available
+"===============================================================================
+"= Source a global configuration if available
+"===============================================================================
 if filereadable("/etc/vim/vimrc.local")
 	source /etc/vim/vimrc.local
 endif
 
-" Read plugin configuration if available
+"===============================================================================
+"= set gui related configurations
+"===============================================================================
+if has("gui_running")
+	set guioptions-=T		" remove toolbar from gvim
+	set guioptions-=l		" Do not display left scrollbar on general
+	set guioptions-=L		" Do not display left scrollbar even necessary
+	set guioptions-=r		" Do not display right scrollbar on general
+	set guioptions-=R		" Do not display right scrollbar even necessary
+	set lines=40			" 40 lines of text instead of 24
+	if has("gui_win32")
+		set guifont=D2Coding:h10:cANSI
+		set nobackup		" Disable creating backup files
+		set noundofile		" Disable creating undo files
+	" elseif has("gui_mac")
+	" 	set guifont= "YOUR FONT
+	endif
+else
+	if &term == 'xterm' || &term == 'screen'
+		set t_Co=256		"Enable 256 colors
+	endif
+endif
+
+"===============================================================================
+"= Set colorscheme
+"===============================================================================
+let color_use = "PaperColor"
+try
+	set background=dark
+	execute 'colorscheme ' . color_use
+	
+catch
+	" TODO: colorscheme not worked
+endtry
+unlet color_use
+
+"===============================================================================
+"= Key mapping (Move window with Ctrl + hjkl)
+"===============================================================================
+nmap <c-h> <c-w>h
+nmap <c-j> <c-w>j
+nmap <c-k> <c-w>k
+nmap <c-l> <c-w>l
+
+"===============================================================================
+"= Key mapping (Resize window with Shift + <>+)
+"===============================================================================
+nmap <s-h> <c-w><
+nmap <s-j> <c-w>-
+nmap <s-k> <c-w>+
+nmap <s-l> <c-w>>
+
+"===============================================================================
+"= Default configuration (view)
+"===============================================================================
+set ruler			" Show line number and its column
+set number			" Show line number indicator on left
+set showmatch		" Show matching pair bracket
+set laststatus=2	" Show status bar at bottom
+set cursorline		" Highlight current line
+
+"===============================================================================
+"= Default configuration (edit)
+"===============================================================================
+set tabstop=4		" Set tab width to 4 spaces
+set shiftwidth=4	" Set indent width to 4 spaces
+set autoindent		" Auto indent
+set smartindent		" Smart indent
+
+"===============================================================================
+"= Default configuration (search)
+"===============================================================================
+set hlsearch		" Highlight search
+set smartcase		" Search smart case option
+
+"===============================================================================
+"= Plugin configuration (load if available)
+"===============================================================================
 let plugin_path = $HOME . "/.vim/plugins.vim"
 if filereadable(plugin_path)
 	execute 'source ' . plugin_path
 endif
 unlet plugin_path
 
-"" default settings for ui
-set number			" Line number indicator
-set tabstop=4		" Set tab width to 4 space
-set shiftwidth=4	" Set indent width to 4 space
-set showmatch		" Show matching bracket
+"===============================================================================
+"= source a project specific configuration if available
+"===============================================================================
+function! SourceProjectRc()
+	let search_list=[]
+	" Generate path recursively from where the vim executed
+	if has('win32') || has('win64') || has('win16')
+		let cwd=substitute(getcwd(), '\\', '/', 'g').'/'
+	else
+		let cwd=getcwd().'/'
+	endif
+	let search_path=''
+	for token in split(cwd, '/\zs')
+		let search_path.=token
+		if count(search_list, search_path) == 0
+			call add(search_list, search_path)
+		endif
+	endfor
+	unlet cwd
+	" Generate path recursively from where the file opened
+	if has('win32') || has('win64') || has('win16')
+		let fhd=substitute(expand('%:p:h'), '\\', '/', 'g').'/'
+	else
+		let fhd=expand('%:p:h').'/'
+	endif
+	let search_path=''
+	for token in split(fhd, '/\zs')
+		let search_path.=token
+		if count(search_list, search_path) == 0
+			call add(search_list, search_path)
+		endif
+	endfor
+	unlet fhd
+	unlet search_path
+	" Check if .project.vimrc exists and load
+	for project_path in search_list
+		if filereadable(project_path.".project.vimrc")
+			execute 'source '.project_path.".project.vimrc"
+		endif
+	endfor
+	unlet search_list
+endfunction
+command! SoProjRc :call SourceProjectRc()	" Register function to command
 
-set hlsearch		" Highlight search keyword
-set smartcase
-
-set laststatus=2
-
-set ai
-set si
+SoProjRc	" Read .proejct.vimrc recursively
