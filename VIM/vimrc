@@ -4,6 +4,8 @@
 if has('win32') || has('win64') || has('win16')
 	" Windows(GVIM) system runtime startup code
 	source $VIMRUNTIME/vimrc_example.vim
+	set nobackup		" Disable creating backup files
+	set noundofile		" Disable creating undo files
 	behave xterm
 else
 	try
@@ -56,8 +58,6 @@ if has("gui_running")
 	set lines=40			" 40 lines of text instead of 24
 	if has("gui_win32")
 		set guifont=D2Coding:h10:cANSI
-		set nobackup		" Disable creating backup files
-		set noundofile		" Disable creating undo files
 	" elseif has("gui_mac")
 	" 	set guifont= "YOUR FONT
 	endif
