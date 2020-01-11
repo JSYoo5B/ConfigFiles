@@ -36,8 +36,15 @@ source $ZSH/oh-my-zsh.sh
 # manual path
 export MANPATH="/usr/local/man:$MANPATH"
 
+# Set default editor
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 # Language environment
 export LANG=en_US.UTF-8
+
+# X-Window configuration
+export DISPLAY=:0
 
 # Import alias configuration files 
 if [ -f ~/.zsh_aliases ]; then
@@ -47,4 +54,9 @@ fi
 # Import development envirnment configuration file
 if [ -f ~/.zsh_devconfig ]; then
 	source ~/.zsh_devconfig
+fi
+
+# load fzf
+if [ -f ~/.fzf.zsh ]; then
+	source ~/.fzf.zsh
 fi
