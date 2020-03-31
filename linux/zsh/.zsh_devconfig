@@ -11,3 +11,24 @@ export PATH="$PATH:/usr/local/opt/qt/bin"
 # Enable direnv hook
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 
+# Enable nvm
+## Set NVM directory
+[ -z "$NVM_DIR" ] && [ -z "${XDG_CONFIG_HOME-}" ] \
+	&& export NVM_DIR="$HOME/.nvm" || export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
+## Load nvm.sh from available lists
+[ -z "$NVM_SH" ] && [ -s "$NVM_DIR/nvm.sh" ] \
+	&& export NVM_SH="$NVM_DIR/nvm.sh"
+[ -z "$NVM_SH" ] && [ -s "/usr/share/nvm/nvm.sh" ] \
+	&& export NVM_SH="/usr/share/nvm/nvm.sh"
+[ -z "$NVM_SH" ] && [ -s "/usr/local/opt/nvm/nvm.sh" ] \
+	&& export NVM_SH="/usr/local/opt/nvm/nvm.sh"
+[ -s "$NVM_SH" ] && source "$NVM_SH" && unset NVM_SH
+# Load nvm bash complettion from available lists
+[ -z "$NVM_SCPL" ] && [ -s "$NVM_DIR/bash_completion" ] \
+	&& export NVM_SCPL="$NVM_DIR/bash_completion"
+[ -z "$NVM_SCPL" ] && [ -s "/usr/share/nvm/bash_completion" ] \
+	&& export NVM_SCPL="/usr/share/nvm/bash_completion"
+[ -z "$NVM_SCPL" ] && [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] \
+	&& export NVM_SCPL="/usr/local/opt/nvm/etc/bash_completion.d/nvm"
+[ -s "$NVM_SCPL" ] && source "$NVM_SCPL" && unset NVM_SCPL
+
