@@ -14,7 +14,8 @@ plugins=(
   git sudo command-not-found
 #  zsh-completions
   fast-syntax-highlighting
-  autojump
+  autojump 
+  tmux tmuxinator
 )
 
 COMPLETION_WAITING_DOTS="true"
