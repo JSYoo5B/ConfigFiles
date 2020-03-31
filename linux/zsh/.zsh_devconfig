@@ -8,6 +8,6 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=-1;32:locus=01:quo
 
 export PATH="$PATH:/usr/local/opt/qt/bin"
 
-if [ -x "$(command -v direnv)" ]; then
-	eval "$(direnv hook zsh)"
-fi
+# Enable direnv hook
+[ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
+

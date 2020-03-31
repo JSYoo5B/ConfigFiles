@@ -46,17 +46,11 @@ export LANG=en_US.UTF-8
 # X-Window configuration
 export DISPLAY=:0
 
-# Import alias configuration files 
-if [ -f ~/.zsh_aliases ]; then
-	source ~/.zsh_aliases
-fi
+# Import alias and shell config file
+[ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
 
-# Import development envirnment configuration file
-if [ -f ~/.zsh_devconfig ]; then
-	source ~/.zsh_devconfig
-fi
+# Import development envirnment config file
+[ -f ~/.zsh_devconfig ] && source ~/.zsh_devconfig
 
-# load fzf
-if [ -f ~/.fzf.zsh ]; then
-	source ~/.fzf.zsh
-fi
+# Enable fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -1,16 +1,10 @@
 #!/bin/zsh
 
 # tmux color setting as default
-if [ -x "$(command -v tmux)" ]; then
-	alias tmux='tmux -2'
-fi
+[ -x "$(command -v tmux)" ] && alias tmux='tmux -2'
 
 # minicom color settings as default
-if [ -x "$(command -v minicom)" ]; then
-	alias minicom='minicom -c on'
-fi
+[ -x "$(command -v minicom)" ] && alias minicom='minicom -c on'
 
 # midnight commander mouse settings as default
-if [ -x "$(command -v mc)" ]; then
-	alias mc='mc -x'
-fi
+[ -x "$(command -v mc)" ] && alias mc='mc -x'
