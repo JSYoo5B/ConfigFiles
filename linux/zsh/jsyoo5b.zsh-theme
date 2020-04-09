@@ -32,7 +32,12 @@ function prompt_char {
 	fi
 }
 
+function get_shell_name {
+	ps -p $$ -ocomm=
+}
+[ -z "$PROMPT_RUNNING_SH" ] && export PROMPT_RUNNING_SH=$(get_shell_name)
+
 PROMPT='┌$(last_run) $(pwd_string)
-└$(ps1_string):$(prompt_char) '
+└$(ps1_string):$PROMPT_RUNNING_SH $(prompt_char) '
 
 RPROMPT='$(git_prompt_info)'
