@@ -1,5 +1,5 @@
 ############################################################################
-## Basic z-shell usage configuration (with oh-my-zsh)					   #
+## Basic z-shell usage configuration (with oh-my-zsh)                      #
 ############################################################################
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -14,13 +14,13 @@ plugins=(
   git sudo command-not-found
 #  zsh-completions
   fast-syntax-highlighting
-  autojump 
+  autojump
   tmux tmuxinator
 )
 
 COMPLETION_WAITING_DOTS="true"
 
-# History setting 
+# History setting
 HIST_STAMPS="dd.mm.yyyy"
 
 # zsh-completion setting
@@ -31,7 +31,7 @@ HIST_STAMPS="dd.mm.yyyy"
 source $ZSH/oh-my-zsh.sh
 
 ############################################################################
-## User configuration (General shell setting)							   #
+## User configuration (General shell setting)                              #
 ############################################################################
 
 # manual path
@@ -55,3 +55,7 @@ export DISPLAY=:0
 
 # Enable fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Reset exit code to 0 for this script
+# (Short-circuit condition check & apply may change exit code)
+true
