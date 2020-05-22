@@ -5,50 +5,55 @@ setopt PROMPT_SUBST
 autoload colors
 colors
 
-_RESET="%f%k%b%u"
+# Change this variable in shell
+export ZTHEME_PRE_SH=''
 
-time_stamp() {
-	local _TIMESTR
+readonly RESET="%f%k%b%u"
 
-	_TIMESTR="%D{%H:%M:%S}"
-	echo "%F{green}${_TIMESTR}${_RESET}"
+__time_stamp() {
+  local time_str
+
+  time_str="%D{%H:%M:%S}"
+  echo "%F{green}${time_str}${RESET}"
 }
 
-pwd_in_width() {
-	local _WIDTH _PWD
+__pwd_in_width() {
+  local width
+  local pwd_string
 
-    _WIDTH=$(( ${COLUMNS:-80} - 10 ))
-	_PWD="%${_WIDTH}<...<%/%<<"
-	echo "%F{blue}%B${_PWD}${_RESET}"
+  width=$(( ${COLUMNS:-80} - 10 ))
+  pwd_string="%${width}<...<%/%<<"
+  echo "%F{blue}%B${pwd_string}${RESET}"
 }
 
-ps1_string() {
-	local _USER _HOST
+__user_at_host() {
+  local user_eff host_eff
 
-	_USER="%F{magenta}"
-	_HOST="%F{yellow}"
-	echo "${_USER}%n${_RESET}@${_HOST}%m${_RESET}"
+  user_eff="%F{magenta}"
+  host_eff="%F{yellow}"
+  echo "${user_eff}%n${RESET}@${host_eff}%m${RESET}"
 }
 
-shell_prompt_char() {
-	local _SHELL _PROMPT
-	local _DECO
+__shell_and_sign() {
+  local shell_name sign
+  local sign_eff
 
-	_SHELL="zsh"
-	if [ $UID -eq 0 ]; then
-		_PROMPT="#"
-		_DECO="%F{red}"
-	else
-		_PROMPT="$"
-	fi
-	echo "${_SHELL} ${_DECO}${_PROMPT}${_RESET}"
+  shell_name="zsh"
+  if [ $UID -eq 0 ]; then
+    sign="#"
+    sign_eff="%F{red}"
+  else
+    sign="$"
+    sign_eff="%F{cyan}"
+  fi
+  echo "${shell_name}${sign_eff}${sign}${RESET}"
 }
 
-PROMPT='┌$(time_stamp) $(pwd_in_width)
-└$(ps1_string):$(shell_prompt_char) '
+PROMPT='┌$(__time_stamp) $(__pwd_in_width)
+└$(__user_at_host):$ZTHEME_PRE_SH$RESET$(__shell_and_sign) '
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%F{green}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="${_RESET}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="${RESET}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%F{red}!"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
