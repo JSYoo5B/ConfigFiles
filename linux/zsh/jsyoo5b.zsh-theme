@@ -1,43 +1,55 @@
+# oh-my-zsh JSYoo5B theme
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}!"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
+# configure modules for zsh
+setopt PROMPT_SUBST
+autoload colors
+colors
 
-function last_run() {
-    echo "%(?,%{$fg[green]%}%*,%{$fg[red]%}%* [%?])"
+_RESET="%f%k%b%u"
+
+time_stamp() {
+	local _TIMESTR
+
+	_TIMESTR="%D{%H:%M:%S}"
+	echo "%F{green}${_TIMESTR}${_RESET}"
 }
 
-function pwd_width_success() {
-    echo "$(( ${COLUMNS:-80} - 11 ))"
+pwd_in_width() {
+	local _WIDTH _PWD
+
+    _WIDTH=$(( ${COLUMNS:-80} - 10 ))
+	_PWD="%${_WIDTH}<...<%/%<<"
+	echo "%F{blue}%B${_PWD}${_RESET}"
 }
 
-function pwd_width_fail() {
-	echo "$(( ${COLUMNS:-80} - 17 ))"
+ps1_string() {
+	local _USER _HOST
+
+	_USER="%F{magenta}"
+	_HOST="%F{yellow}"
+	echo "${_USER}%n${_RESET}@${_HOST}%m${_RESET}"
 }
 
-function pwd_string() {
-	echo "%{$fg_bold[blue]%}%(?,%$(pwd_width_success)<...<%/%<<,%$(pwd_width_fail)<...<%/%<<)%{$reset_color%}"
-}
+shell_prompt_char() {
+	local _SHELL _PROMPT
+	local _DECO
 
-function ps1_string() {
-	echo "%{$fg[magenta]%}%n%{$reset_color%}@%{$fg[yellow]%}%m%{$reset_color%}"
-}
-
-function prompt_char {
-	if [ $UID -eq 0 ]; then 
-		echo "%{$fg[red]%}#%{$reset_color%}"
-	else 
-		echo $
+	_SHELL="zsh"
+	if [ $UID -eq 0 ]; then
+		_PROMPT="#"
+		_DECO="%F{red}"
+	else
+		_PROMPT="$"
 	fi
+	echo "${_SHELL} ${_DECO}${_PROMPT}${_RESET}"
 }
 
-function get_shell_name {
-	ps -p $$ -ocomm=
-}
-[ -z "$PROMPT_RUNNING_SH" ] && export PROMPT_RUNNING_SH=$(get_shell_name)
+PROMPT='┌$(time_stamp) $(pwd_in_width)
+└$(ps1_string):$(shell_prompt_char) '
 
-PROMPT='┌$(last_run) $(pwd_string)
-└$(ps1_string):$PROMPT_RUNNING_SH $(prompt_char) '
+ZSH_THEME_GIT_PROMPT_PREFIX="%F{green}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="${_RESET}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%F{red}!"
+ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 RPROMPT='$(git_prompt_info)'
