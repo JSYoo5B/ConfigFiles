@@ -1,94 +1,126 @@
+#!/bin/zsh
+
 # oh-my-zsh JSYoo5B theme
+
+###############################################################################
+# Customize
+## Change this associative array to modify theme in runtime
+declare -A ZSH_THEME_CONF
+## Visual effects for each parts
+ZSH_THEME_CONF[TIME_EFFECT]="%F{green}"           # Time: Green text
+ZSH_THEME_CONF[PWD_EFFECT]="%F{blue}%B"           # PWD: Blue text, Bolded
+ZSH_THEME_CONF[USER_EFFECT]="%F{magenta}"         # Username: Magenta text
+ZSH_THEME_CONF[HOST_EFFECT]="%F{yellow}"          # Hostname: Yellow text
+ZSH_THEME_CONF[PROMPT_ROOT_EFFECT]="%F{red}"      # Root user: Red text
+ZSH_THEME_CONF[PROMPT_GENERAL_EFFECT]="%F{cyan}"  # General users: Cyan text
+## Texts for customizing theme in runtime
+## (Add your visual effects inside each variable)
+## (Visual effects will be reset after showing each variable)
+ZSH_THEME_CONF[USER_PREFIX]=''          # Default: blank
+ZSH_THEME_CONF[USER_SUFFIX]=''          # Default: blank
+ZSH_THEME_CONF[HOST_PREFIX]=''          # Default: blank
+ZSH_THEME_CONF[HOST_SUFFIX]=''          # Default: blank
+ZSH_THEME_CONF[SHELL_NAME]="zsh"        # Default: "zsh"
+ZSH_THEME_CONF[RPROMPT_PREFIX]=''       # Default: blank
+ZSH_THEME_CONF[RPROMPT_SUFFIX]=''       # Default: blank
+###############################################################################\
+
 
 # configure modules for zsh
 setopt PROMPT_SUBST
 autoload colors
 colors
 
-# Change this variable in shell
-declare -A ZSH_THEME_CONFIG
-
-# Reset foreground, background, bold, underline
-readonly CLR="%f%k%b%u"
+# Define constants
+_CLR="%f%k%b%u"     # Reset all visual effects
 
 
-## First line, starts with time stamp
-__time_stamp() {
-  local time_str="%D{%H:%M:%S}"
-  local time_eff="%F{green}"
+###############################################################################
+# Main prompt (first line)
+## Show current time (hour, minute, second)
+_theme_func_timestamp() {
+  local time_str="%D{%H:%M:%S}"         # HH:MM:SS
 
-  if [[ -n $ZSH_THEME_CONFIG[TIME_EFFECT] ]]; then
-    time_eff=$ZSH_THEME_CONFIG[TIME_EFFECT]
-  fi
-
-  echo "${time_eff}${time_str}${CLR}"
+  echo "\${ZSH_THEME_CONF[TIME_EFFECT]}${time_str}${_CLR}"
 }
 
-## First line, current directory
-__pwd_in_width() {
-  local width=$(( ${COLUMNS:-80} - 10 ))
-  local pwd_str="%${width}<...<%/%<<"
-  local pwd_eff="%F{blue}%B"
+## Show pwd in absolute path format
+## When the path expects line wrap, it will truncate to fit console width
+_theme_func_pwd() {
+  local width="\$(( \${COLUMNS:-80} - 10 ))"      # 10 == "┌HH:MM:SS "
+  local pwd_str="%${width}<...<%/%<<"             # ...h-my-zsh/custom/themes
 
-  if [[ -n $ZSH_THEME_CONFIG[PWD_EFFECT] ]]; then
-    pwd_eff=$ZSH_THEME_CONFIG[PWD_EFFECT]
-  fi
-
-  echo "${pwd_eff}${pwd_str}${CLR}"
+  echo "\${ZSH_THEME_CONF[PWD_EFFECT]}${pwd_str}${_CLR}"
 }
+###############################################################################
 
-## Second line, username and hostname
-__user_at_host() {
-  local user user_eff="%F{magenta}"
-  local host host_eff="%F{yellow}"
 
-  if [[ -n $ZSH_THEME_CONFIG[USER_EFFECT] ]]; then
-    user_eff=$ZSH_THEME_CONFIG[USER_EFFECT]
-  fi
-  if [[ -n $ZSH_THEME_CONFIG[PWD_EFFECT] ]]; then
-    host_eff=$ZSH_THEME_CONFIG[PWD_EFFECT]
-  fi
-  user="${ZSH_THEME_CONFIG[USER_PREFIX]}${CLR}"
-  user="${user}${user_eff}%n${CLR}${ZSH_THEME_CONFIG[USER_SUFFIX]}${CLR}"
-  host="${ZSH_THEME_CONFIG[HOST_PREFIX]}${CLR}"
-  host="${host}${host_eff}%m${CLR}${ZSH_THEME_CONFIG[HOST_SUFFIX]}${CLR}"
+###############################################################################
+# Main prompt (second line)
+## Show username_at_hostname
+_theme_func_user_at_host() {
+  local user host
+
+  user="\${ZSH_THEME_CONF[USER_PREFIX]}${_CLR}"
+  user="${user}\${ZSH_THEME_CONF[USER_EFFECT]}%n${_CLR}"
+  user="${user}\${ZSH_THEME_CONF[USER_SUFFIX]}${_CLR}"
+
+  host="\${ZSH_THEME_CONF[HOST_PREFIX]}${_CLR}"
+  host="${host}\${ZSH_THEME_CONF[HOST_EFFECT]}%m${_CLR}"
+  host="${host}\${ZSH_THEME_CONF[HOST_SUFFIX]}${_CLR}"
 
   echo "${user}@${host}"
 }
 
-## Second line, shell and prompt character
-__shell_and_prompt() {
-  local prompt prompt_eff
+## Show current shell name and prompt character
+_theme_func_shell_and_prompt() {
   local shell_name
+  local prompt eff
+
+  shell_name="\${ZSH_THEME_CONF[SHELL_NAME]}${_CLR}"
 
   if [ $UID -eq 0 ]; then
     prompt="#"
-    prompt_eff="%F{red}"
+    eff="\${ZSH_THEME_CONF[PROMPT_ROOT_EFFECT]}"
   else
     prompt="$"
-    prompt_eff="%F{cyan}"
+    eff="\${ZSH_THEME_CONF[PROMPT_GENERAL_EFFECT]}"
   fi
-  shell_name="${ZSH_THEME_CONFIG[SH_PREFIX]}${CLR}"
-  shell_name="${shell_name}${ZSH_THEME_CONFIG[SHELL_NAME]-zsh}"
-  shell_name="${shell_name}${CLR}${ZSH_THEME_CONFIG[SH_SUFFIX]}"
 
-  echo "${shell_name}${CLR}${prompt_eff}${prompt}${CLR}"
+  echo "${shell_name}${eff}${prompt}${_CLR}"
+}
+###############################################################################
+
+
+# Evaluate PROMPT (ZSH_THEME_CONF & runtime vars are not evaluated)
+PROMPT="┌$(_theme_func_timestamp) $(_theme_func_pwd)
+└$(_theme_func_user_at_host):$(_theme_func_shell_and_prompt) "
+
+
+###############################################################################
+# Sub prompt (right of main prompt second line)
+## Show right prompt prefix
+_theme_func_rpr_pre() {
+  echo "\${ZSH_THEME_CONF[RPROMPT_PREFIX]}${_CLR}"
 }
 
-PROMPT='┌$(__time_stamp) $(__pwd_in_width)
-└$(__user_at_host):$(__shell_and_prompt) '
-
-__right_prefix() {
-  echo "${ZSH_THEME_CONFIG[RPROMPT_PREFIX]}${CLR}"
+## Show right prompt suffix
+_theme_func_rpr_suf() {
+  echo "\${ZSH_THEME_CONF[RPROMPT_SUFFIX]}${_CLR}"
 }
 
-__right_suffix() {
-  echo "${ZSH_THEME_CONFIG[RPROMPT_SUFFIX]}${CLR}"
-}
-
+## Right prompt shows git information as default
 ZSH_THEME_GIT_PROMPT_PREFIX="%F{green}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="${CLR}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="${_CLR}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%F{red}!"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
+###############################################################################
 
-RPROMPT='$(__right_prefix)$(git_prompt_info)$(__right_suffix)'
+
+# Evaluate RPROMPT (Ext. func. call & ZSH_THEME_CONT are not evaluated)
+RPROMPT="$(_theme_func_rpr_pre)\$(git_prompt_info)$(_theme_func_rpr_suf)"
+
+
+# Unset internal variables and functions
+unset _CLR
+unset -f -m "_theme_func_*"
