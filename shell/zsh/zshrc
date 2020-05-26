@@ -30,6 +30,17 @@ HIST_STAMPS="dd.mm.yyyy"
 # Load oh-my-zsh with given configuration
 source $ZSH/oh-my-zsh.sh
 
+# Detect if current shell is running on WSL
+if [[ $OSTYPE == darwin* ]]; then
+	# WSL cannot run macOS, skip
+elif [[ "$(</proc/version)" == *@(Microsoft|WSL)* ]]; then
+	# When the kernel version has Microsoft or WSL, 
+	WSL_DISTRO=$(grep -oP '(?<=^ID=).+' /etc/os-release | tr -d '"')
+fi
+if [[ ! -z "$WSL_DISTRO" ]]; then
+	ZSH_THEME_CONF[HOST_SUFFIX]="%F{yellow}/${WSL_DISTRO}"
+fi
+
 ############################################################################
 ## User configuration (General shell setting)                              #
 ############################################################################
