@@ -35,10 +35,11 @@ if [[ $OSTYPE == darwin* ]]; then
 	# WSL cannot run macOS, skip
 elif [[ "$(</proc/version)" == *@(Microsoft|WSL)* ]]; then
 	# When the kernel version has Microsoft or WSL, 
-	WSL_DISTRO=$(grep -oP '(?<=^ID=).+' /etc/os-release | tr -d '"')
+	WSL_DISTRO_NAME=$(grep -oP '(?<=^ID=).+' /etc/os-release | tr -d '"')
 fi
-if [[ ! -z "$WSL_DISTRO" ]]; then
-	ZSH_THEME_CONF[HOST_SUFFIX]="%F{yellow}/${WSL_DISTRO}"
+
+if [[ ! -z "$WSL_DISTRO_NAME" ]]; then
+	ZSH_THEME_CONF[HOST_SUFFIX]="%F{yellow}/${WSL_DISTRO_NAME}"
 fi
 
 ############################################################################
