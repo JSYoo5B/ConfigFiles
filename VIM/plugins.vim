@@ -6,6 +6,8 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 	" Plugin manager
 	Plugin 'gmarik/Vundle.vim'			" Plugin manager
+	" Color scheme
+	Plugin 'NLKNguyen/papercolor-theme'	" Papercolor theme scheme
 	" IDE tools
 	Plugin 'The-NERD-tree'				" File explorer
 	Plugin 'The-NERD-Commenter'			" Comment enhancer
