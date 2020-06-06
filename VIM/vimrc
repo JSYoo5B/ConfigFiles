@@ -40,6 +40,15 @@ if has("syntax")
 endif
 
 "===============================================================================
+"= Plugin configuration (load if available)
+"===============================================================================
+let plugin_path = $HOME . "/.vim/plugins.vim"
+if filereadable(plugin_path)
+	execute 'source ' . plugin_path
+endif
+unlet plugin_path
+
+"===============================================================================
 "= Source a global configuration if available
 "===============================================================================
 if filereadable("/etc/vim/vimrc.local")
@@ -118,15 +127,6 @@ set smartindent		" Smart indent
 "===============================================================================
 set hlsearch		" Highlight search
 set smartcase		" Search smart case option
-
-"===============================================================================
-"= Plugin configuration (load if available)
-"===============================================================================
-let plugin_path = $HOME . "/.vim/plugins.vim"
-if filereadable(plugin_path)
-	execute 'source ' . plugin_path
-endif
-unlet plugin_path
 
 "===============================================================================
 "= source a project specific configuration if available
