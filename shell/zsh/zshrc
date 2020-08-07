@@ -31,13 +31,16 @@ HIST_STAMPS="dd.mm.yyyy"
 source $ZSH/oh-my-zsh.sh
 
 # Detect if current shell is running on WSL
-if [[ $OSTYPE == darwin* ]]; then
-	# WSL cannot run macOS, skip
-elif [[ "$(</proc/version)" == *@(Microsoft|WSL)* ]]; then
-	# When the kernel version has Microsoft or WSL, 
-	WSL_DISTRO_NAME=$(grep -oP '(?<=^ID=).+' /etc/os-release | tr -d '"')
+if [[ -z "$WSL_DISTRO_NAME" ]]; then
+	if [[ $OSTYPE == darwin* ]]; then
+		# WSL cannot run macOS, skip
+	elif [[ "$(</proc/version)" == *([Mm]icrosoft|WSL)* ]]; then
+		# When the kernel version has Microsoft or WSL 
+		WSL_DISTRO_NAME=$(grep -oP '(?<=^ID=).+' /etc/os-release | tr -d '"')
+	fi
 fi
 
+# When the WSL distro found, attach after hostname
 if [[ ! -z "$WSL_DISTRO_NAME" ]]; then
 	ZSH_THEME_CONF[HOST_SUFFIX]="%F{yellow}/${WSL_DISTRO_NAME}"
 fi
