@@ -38,6 +38,10 @@ if [[ -z "$WSL_DISTRO_NAME" ]]; then
 		# When the kernel version has Microsoft or WSL 
 		WSL_DISTRO_NAME=$(grep -oP '(?<=^ID=).+' /etc/os-release | tr -d '"')
 	fi
+	export DISPLAY=:0
+else
+	# When the $WSL_DISTRO_NAME defined, current shell is running on native
+	export DISPLAY=$(grep -oP '(?<=^nameserver ).+' /etc/resolv.conf):0
 fi
 
 # When the WSL distro found, attach after hostname
@@ -58,9 +62,6 @@ export EDITOR="$VISUAL"
 
 # Language environment
 export LANG=en_US.UTF-8
-
-# X-Window configuration
-export DISPLAY=:0
 
 # Import alias and shell config file
 [ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
