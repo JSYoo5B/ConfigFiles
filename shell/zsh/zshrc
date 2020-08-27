@@ -14,18 +14,22 @@ plugins=(
   git sudo command-not-found
 #  zsh-completions
   fast-syntax-highlighting
+  alias-tips
   autojump
   tmux tmuxinator
 )
 
 COMPLETION_WAITING_DOTS="true"
 
+# Reveal aliased commands
+export ZSH_PLUGINS_ALIAS_TIPS_REVEAL=1
+export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_TEXT="Actual command: "
+
 # History setting
 HIST_STAMPS="dd.mm.yyyy"
 
 # zsh-completion setting
 #autoload -U compinit && compinit
-
 
 # Load oh-my-zsh with given configuration
 source $ZSH/oh-my-zsh.sh
