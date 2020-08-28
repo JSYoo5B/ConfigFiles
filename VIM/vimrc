@@ -83,9 +83,9 @@ let color_use = "PaperColor"
 try
 	set background=dark
 	execute 'colorscheme ' . color_use
-	
 catch
-	" TODO: colorscheme not worked
+	" When the colorscheme doesn't exist, try use default skin
+	execute 'colorscheme pablo'
 endtry
 unlet color_use
 
