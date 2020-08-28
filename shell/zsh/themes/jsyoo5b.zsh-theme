@@ -109,16 +109,39 @@ _theme_func_rpr_suf() {
   echo "\${ZSH_THEME_CONF[RPROMPT_SUFFIX]}${_CLR}"
 }
 
+git_prompt_detail() {
+  local info
+  local stat_mark
+
+  info="$(git_prompt_info)"
+  if [[ $info != "" ]]; then
+    stat_mark="$(parse_git_dirty)"
+  fi
+
+  if [[ $stat_mark = $ZSH_THEME_GIT_PROMPT_DIRTY ]]; then
+    stat_mark="${_CLR}($(git_prompt_status)${_CLR})"
+  else
+    stat_mark=""
+  fi
+
+  echo "${info}${stat_mark}"
+}
+
 ## Right prompt shows git information as default
 ZSH_THEME_GIT_PROMPT_PREFIX="%F{green}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="${_CLR}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%F{red}!"
+ZSH_THEME_GIT_PROMPT_DIRTY="${_CLR} "
 ZSH_THEME_GIT_PROMPT_CLEAN=""
+ZSH_THEME_GIT_PROMPT_UNKNOWN="%F{yellow}?"
+ZSH_THEME_GIT_PROMPT_ADDED="%F{cyan}+${_CLR}"
+ZSH_THEME_GIT_PROMPT_MODIFIED="%F{yellow}*${_CLR}"
+ZSH_THEME_GIT_PROMPT_DELETED="%F{red}-${_CLR}"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%F{magenta}?${_CLR}"
 ###############################################################################
 
 
 # Evaluate RPROMPT (Ext. func. call & ZSH_THEME_CONT are not evaluated)
-RPROMPT="$(_theme_func_rpr_pre)\$(git_prompt_info)$(_theme_func_rpr_suf)"
+RPROMPT="$(_theme_func_rpr_pre)\$(git_prompt_detail)$(_theme_func_rpr_suf)"
 
 
 # Unset internal variables and functions
