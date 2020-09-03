@@ -76,6 +76,7 @@ _theme_func_user_at_host() {
 _theme_func_shell_and_prompt() {
   local shell_name
   local prompt eff
+  local last_status
 
   shell_name="\${ZSH_THEME_CONF[SHELL_NAME]}${_CLR}"
 
@@ -87,7 +88,9 @@ _theme_func_shell_and_prompt() {
     eff="\${ZSH_THEME_CONF[PROMPT_GENERAL_EFFECT]}"
   fi
 
-  echo "${shell_name}${eff}${prompt}${_CLR}"
+  last="%(?,,%F{red}<%?>)"
+
+  echo "${shell_name}${last}${_CLR}${eff}${prompt}${_CLR}"
 }
 ###############################################################################
 
