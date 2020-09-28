@@ -34,7 +34,22 @@ man() {
 }
 
 # colormake
-[ -x "$(command -v colormake)" ] && alias make='colormake'
+if [[ -x "$(command -v colormake)" ]]; then
+	function enhmake() {
+		local cmd=colormake
+
+		for i; do
+			if [[ $i =~ "conf" ]]; then
+				cmd=make
+				break
+			fi
+		done
+		
+		# run make or colormake with other given args
+		$cmd "$@"
+	}
+	alias make=enhmake
+fi
 
 # Reset exit code to 0 for this script
 # (Short-circuit condition check & apply may change exit code)
