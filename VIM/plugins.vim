@@ -8,16 +8,21 @@ call vundle#begin()
 	Plugin 'gmarik/Vundle.vim'			" Plugin manager
 	" Color scheme
 	Plugin 'NLKNguyen/papercolor-theme'	" Papercolor theme scheme
-	" IDE tools
+	" IDE tools (utils)
 	Plugin 'The-NERD-tree'				" File explorer
-	Plugin 'The-NERD-Commenter'			" Comment enhancer
 	Plugin 'vim-airline/vim-airline'	" Enhanced status bar
-	Plugin 'snipMate'					" Snippping plugin
-	Plugin 'wesleyche/srcexpl'			" Source code explorer
-	Plugin 'airblade/vim-gitgutter'		" Git change tracker
-	Plugin 'tpope/vim-fugitive'			" Git command in vim
+	" Code visualize enhancement
 	Plugin 'Yggdroot/indentLine'		" Indent guideline
+	Plugin 'airblade/vim-gitgutter'		" Git change tracker
+	" Code suggest, check, and enhancement
 	Plugin 'scrooloose/syntastic'		" Syntax checker
+	Plugin 'The-NERD-Commenter'			" Comment enhancer
+	" Code reading enhancement (tag, jump)
+	Plugin 'xolox/vim-misc'				" required for vim-easytags
+	Plugin 'xolox/vim-easytags'			" ctags improver
+	Plugin 'ronakg/quickr-cscope.vim'	" cscope improver
+	Plugin 'majutsushi/tagbar'			" tagbar to overview code
+	Plugin 'wesleyche/srcexpl'			" Source code explorer
 call vundle#end()
 
 filetype plugin indent on
@@ -26,15 +31,17 @@ filetype plugin indent on
 "= Key mapping
 "===============================================================================
 map <F2> :NERDTreeToggle<CR>
-map <F3> :BufExplorer<CR>
-map <F4> :SrcExplToggle<CR>
-map <F5> :TlistToggle<CR>
 
 "===============================================================================
-"= NERD Tree
+"= NERD Tree configuration
 "===============================================================================
 let NERDTreeWinPos="left"
 let g:NERDTreeDirArrows=0
+
+"===============================================================================
+"= Vim-airline configuration
+"===============================================================================
+let g:airline#extensions#whitespace#enabled=0
 
 "===============================================================================
 "= IndentLine configuration
@@ -51,14 +58,35 @@ let g:indentLine_maxLines = 3000
 nnoremap \il :IndentLinesToggle<CR>
 
 "===============================================================================
-"= Vim-airline
+"= easytags configuration
 "===============================================================================
-let g:airline#extensions#whitespace#enabled=0
+let g:easytags_async = 1			" load tags async (better responsive)
+let g:easytags_auto_highlight = 0	" disable highlight (better responsive)
+let g:easytags_include_members = 1	" track member of structs
+let g:easytags_dynamic_files = 1	" load tags on demand
+
+"===============================================================================
+"= quickr-cscope configuration
+"===============================================================================
+function! LoadCscope()
+	let db = findfile("cscope.out", ".;")
+	if (!empty(db))
+		let path = strpart(db, 0, match(db, "/cscope.out$"))
+		set nocscopeverbose " suppress 'duplicate connection' error
+		exe "cs add " . db . " " . path 
+		set cscopeverbose 
+	" else add the database pointed to by environment variable
+	elseif $CSCOPE_DB != ""
+		cs add $CSCOPE_DB
+	endif
+endfunction
+
+set tags=./tags
+au BufEnter /* call LoadCscope()
 
 "===============================================================================
 "= Source Explorer config
 "===============================================================================
-
 " // Set the height of Source Explorer window
 let g:SrcExpl_winHeight = 8
 " // Set 100 ms for refreshing the Source Explorer
