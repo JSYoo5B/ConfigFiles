@@ -31,6 +31,9 @@ HIST_STAMPS="dd.mm.yyyy"
 # zsh-completion setting
 #autoload -U compinit && compinit
 
+# tmux plugin configuration
+export ZSH_TMUX_UNICODE=true
+
 # Load oh-my-zsh with given configuration
 source $ZSH/oh-my-zsh.sh
 
