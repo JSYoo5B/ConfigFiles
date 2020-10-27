@@ -28,15 +28,11 @@ call vundle#end()
 filetype plugin indent on
 
 "===============================================================================
-"= Key mapping
-"===============================================================================
-map <F2> :NERDTreeToggle<CR>
-
-"===============================================================================
 "= NERD Tree configuration
 "===============================================================================
 let NERDTreeWinPos="left"
 let g:NERDTreeDirArrows=0
+map <F2> :NERDTreeToggle<CR>
 
 "===============================================================================
 "= Vim-airline configuration
@@ -64,6 +60,11 @@ let g:easytags_async = 1			" load tags async (better responsive)
 let g:easytags_auto_highlight = 0	" disable highlight (better responsive)
 let g:easytags_include_members = 1	" track member of structs
 let g:easytags_dynamic_files = 1	" load tags on demand
+
+"==============================================================================
+"= tagbar configuration
+"==============================================================================
+map <F8> :TagbarToggle<CR>
 
 "===============================================================================
 "= quickr-cscope configuration
