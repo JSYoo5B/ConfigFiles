@@ -121,6 +121,7 @@ set tabstop=4		" Set tab width to 4 spaces
 set shiftwidth=4	" Set indent width to 4 spaces
 set autoindent		" Auto indent
 set smartindent		" Smart indent
+set encoding=utf-8	" Set default encoding to UTF-8
 
 "===============================================================================
 "= Default configuration (search)
