@@ -1,0 +1,72 @@
+################################################################################
+## System shell configuration (system-dependent config before bash)            #
+################################################################################
+# Enable homebrew when it were installed on /opt/homebrew
+if [[ $OSTYPE == darwin* ]]; then
+	[ -f /opt/homebrew/bin/brew ] && eval $(/opt/homebrew/bin/brew shellenv)
+fi
+
+################################################################################
+## Basic bash usage configuration (with oh-my-bash)                            #
+################################################################################
+# Path to your oh-my-bash installation.
+export OSH=/home/jsyoo5b/.oh-my-bash
+
+# bash and Oh-my-bash config aliases
+alias bashconfig="vi ~/.bashrc"
+alias omhconfig="vi ~/.oh-my-bash"
+
+# BASH theme, completion and plugins
+OSH_THEME="jsyoo5b"
+completions=(
+  git
+  composer
+  ssh
+  defaults
+  tmux
+)
+plugins=(
+  git
+  bashmarks
+  progress
+)
+aliases=(
+  general
+)
+
+COMPLETION_WAITING_DOTS="true"
+
+# History setting
+HIST_STAMPS="dd.mm.yyyy"
+
+# Load oh-my-bash with given configuration
+source $OSH/oh-my-bash.sh
+
+# Detect if current shell is running on WSL
+if [[ -z "$WSL_DISTRO_NAME" ]]; then
+	if [[ $OSTYPE == darwin* ]]; then
+		# WSL cannot run macOS, skip
+		true
+	elif [[ "$(</proc/version)" == *([Mm]icrosoft|WSL)* ]]; then
+		# When the kernel version has Microsoft or WSL
+		WSL_DISTRO_NAME=$(grep -oP '(?<=^ID=).+' /etc/os-release | tr -d '"')
+	fi
+	export DISPLAY=:0
+else
+	# When the WSL_DISTRO_NAME defined, current shell is running on native
+	export DISPLAY=$(grep -oP '(?<=^nameserver ).+' /etc/resolv.conf):0
+fi
+
+###############################################################################
+## User configuration (General shell setting)                                 #
+###############################################################################
+# manual path
+export MANPATH="/usr/local/man:$MANPATH"
+
+# Set default editor
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# Laanguage environment
+export LANG=en_US.UTF-8
+
