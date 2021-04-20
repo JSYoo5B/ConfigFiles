@@ -70,3 +70,5 @@ export EDITOR="$VISUAL"
 # Laanguage environment
 export LANG=en_US.UTF-8
 
+# Import alias and shell config file
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
