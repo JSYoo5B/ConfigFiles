@@ -32,6 +32,13 @@ export PATH="$PATH:/usr/local/opt/qt/bin"
 	&& export NVM_SCPL="/usr/local/opt/nvm/etc/bash_completion.d/nvm"
 [ -s "$NVM_SCPL" ] && source "$NVM_SCPL" && unset NVM_SCPL
 
+
+# change go envvironment
+[ -x "$(command -v go)" ] && [ -z "$GOROOT" ] \
+	&& export GOROOT="$(go env GOROOT)"
+[ -d $GOROOT ] && [ -d "$HOME/Workspace/go" ] \
+	&& export GOPATH="$HOME/Workspace/go" && export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+
 # Reset exit code to 0 for this script
 # (Short-circuit condition check & apply may change exit code)
 true
