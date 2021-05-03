@@ -11,6 +11,7 @@ call vundle#begin()
 	" IDE tools (utils)
 	Plugin 'The-NERD-tree'				" File explorer
 	Plugin 'vim-airline/vim-airline'	" Enhanced status bar
+	Plugin 'tpope/vim-fugitive'			" Git command support in VIM
 	" Code visualize enhancement
 	Plugin 'Yggdroot/indentLine'		" Indent guideline
 	Plugin 'airblade/vim-gitgutter'		" Git change tracker
