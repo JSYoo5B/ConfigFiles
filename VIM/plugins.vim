@@ -5,25 +5,28 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 	" Plugin manager
-	Plugin 'gmarik/Vundle.vim'			" Plugin manager
+	Plugin 'gmarik/Vundle.vim'				" Plugin manager
 	" Color scheme
-	Plugin 'NLKNguyen/papercolor-theme'	" Papercolor theme scheme
+	Plugin 'NLKNguyen/papercolor-theme'		" Papercolor theme scheme
 	" IDE tools (utils)
-	Plugin 'The-NERD-tree'				" File explorer
-	Plugin 'vim-airline/vim-airline'	" Enhanced status bar
-	Plugin 'tpope/vim-fugitive'			" Git command support in VIM
+	Plugin 'The-NERD-tree'					" File explorer
+	Plugin 'vim-airline/vim-airline'		" Enhanced status bar
+	Plugin 'vim-airline/vim-airline-themes'	" Theme for vim airline
+	Plugin 'tpope/vim-fugitive'				" Git command support in VIM
+	Plugin 'blueyed/vim-diminactive'		" Inactive window dimming
+	Plugin 'goballooning/vim-conque'		" Open terminals in VIM
 	" Code visualize enhancement
-	Plugin 'Yggdroot/indentLine'		" Indent guideline
-	Plugin 'airblade/vim-gitgutter'		" Git change tracker
+	Plugin 'Yggdroot/indentLine'			" Indent guideline
+	Plugin 'airblade/vim-gitgutter'			" Git change tracker
 	" Code suggest, check, and enhancement
-	Plugin 'scrooloose/syntastic'		" Syntax checker
-	Plugin 'The-NERD-Commenter'			" Comment enhancer
+	Plugin 'scrooloose/syntastic'			" Syntax checker
+	Plugin 'The-NERD-Commenter'				" Comment enhancer
 	" Code reading enhancement (tag, jump)
-	Plugin 'xolox/vim-misc'				" required for vim-easytags
-	Plugin 'xolox/vim-easytags'			" ctags improver
-	Plugin 'ronakg/quickr-cscope.vim'	" cscope improver
-	Plugin 'majutsushi/tagbar'			" tagbar to overview code
-	Plugin 'wesleyche/srcexpl'			" Source code explorer
+	Plugin 'xolox/vim-misc'					" required for vim-easytags
+	Plugin 'xolox/vim-easytags'				" ctags improver
+	Plugin 'ronakg/quickr-cscope.vim'		" cscope improver
+	Plugin 'majutsushi/tagbar'				" tagbar to overview code
+	Plugin 'wesleyche/srcexpl'				" Source code explorer
 call vundle#end()
 
 filetype plugin indent on
@@ -39,6 +42,18 @@ map <F2> :NERDTreeToggle<CR>
 "= Vim-airline configuration
 "===============================================================================
 let g:airline#extensions#whitespace#enabled=0
+
+"===============================================================================
+"= Vim-airline configuration
+"===============================================================================
+let g:diminactive_use_syntax = 1		" no syntax_highlight on inactive buffer
+let g:diminactive_use_colorcolumn = 1	" Change buffer color to ColorColumn
+
+"===============================================================================
+"= Conque terminal configuration
+"===============================================================================
+let g:ConqueTerm_InsertOnEnter = 1		" Change into insert mode on entering
+let g:ConqueTerm_CWInsert = 1			" Enable Ctrl+w on insert mode
 
 "===============================================================================
 "= IndentLine configuration
