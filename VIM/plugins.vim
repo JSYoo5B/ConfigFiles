@@ -15,6 +15,7 @@ call vundle#begin()
 	Plugin 'tpope/vim-fugitive'				" Git command support in VIM
 	Plugin 'blueyed/vim-diminactive'		" Inactive window dimming
 	Plugin 'goballooning/vim-conque'		" Open terminals in VIM
+	Plugin 'embear/vim-localvimrc'			" Project specific vimrc
 	" Code visualize enhancement
 	Plugin 'Yggdroot/indentLine'			" Indent guideline
 	Plugin 'airblade/vim-gitgutter'			" Git change tracker
@@ -54,6 +55,11 @@ let g:diminactive_use_colorcolumn = 1	" Change buffer color to ColorColumn
 "===============================================================================
 let g:ConqueTerm_InsertOnEnter = 1		" Change into insert mode on entering
 let g:ConqueTerm_CWInsert = 1			" Enable Ctrl+w on insert mode
+
+"===============================================================================
+"= localvimrc configuration
+"===============================================================================
+let g:localvimrc_persistent = 2		" Store and restore all decisiioins
 
 "===============================================================================
 "= IndentLine configuration
