@@ -102,8 +102,7 @@ _theme_func_shell_and_prompt() {
 set_bash_prompt() {
 	RETVAL=$?
 	PR=""
-	PS1="
-┌$(_theme_func_timestamp) $(_theme_func_pwd)
+	PS1="┌$(_theme_func_timestamp) $(_theme_func_pwd)
 └$(_theme_func_user_at_host):$(_theme_func_shell_and_prompt) "
 	PS2='> '
 	PS4='+ '
