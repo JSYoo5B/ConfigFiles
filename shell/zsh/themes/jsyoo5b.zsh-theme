@@ -96,7 +96,8 @@ _theme_func_shell_and_prompt() {
 
 
 # Evaluate PROMPT (ZSH_THEME_CONF & runtime vars are not evaluated)
-PROMPT="┌$(_theme_func_timestamp) $(_theme_func_pwd)
+PROMPT="
+┌$(_theme_func_timestamp) $(_theme_func_pwd)
 └$(_theme_func_user_at_host):$(_theme_func_shell_and_prompt) "
 
 
