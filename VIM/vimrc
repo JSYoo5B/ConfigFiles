@@ -32,6 +32,7 @@ else
 	unlet os_str
 endif
 
+if !has('ide')
 "===============================================================================
 "= Enable syntax highlight
 "===============================================================================
@@ -67,8 +68,8 @@ if has("gui_running")
 	set lines=40			" 40 lines of text instead of 24
 	if has("gui_win32")
 		set guifont=D2Coding:h10:cANSI
-	" elseif has("gui_mac")
-	" 	set guifont= "YOUR FONT
+	elseif has("gui_macvim")
+		set guifont=D2Coding:h14 "YOUR FONT
 	endif
 else
 	if &term == 'xterm' || &term == 'screen'
@@ -88,6 +89,8 @@ catch
 	execute 'colorscheme pablo'
 endtry
 unlet color_use
+
+endif "!has("ide")
 
 "===============================================================================
 "= Key mapping (Move window with Ctrl + hjkl)
