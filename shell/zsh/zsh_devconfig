@@ -8,6 +8,9 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=-1;32:locus=01:quo
 
 export PATH="$PATH:/usr/local/opt/qt/bin"
 
+# Simple script for network check
+[ -x "$(command -v curl)" ] && alias myip='curl ifconfig.co/'
+
 # Enable direnv hook
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 
@@ -38,6 +41,26 @@ export PATH="$PATH:/usr/local/opt/qt/bin"
 	&& export GOROOT="$(go env GOROOT)"
 [ -d $GOROOT ] && [ -d "$HOME/Workspace/go" ] \
 	&& export GOPATH="$HOME/Workspace/go" && export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+
+# add environment script sourcing function
+export RC_DIR="$HOME/Workspace/.envscripts"
+
+funciton loadenv() {
+	source "$RC_DIR/$1"
+}
+function _loadenv_complete() {
+    local rc_dir=${RC_DIR:-$HOME/.rc}
+    local search_dir=${1:-$rc_dir}
+    local rc_files=(${(f)"$(find $search_dir -name '*.rc' -o -name '*.sh')"})
+    local completions=()
+
+    for file in ${rc_files[@]}; do
+        completions+=("${file#$rc_dir/}")
+    done
+
+    compadd -U -W "${completions[@]}"
+}
+compdef _loadenv_complete loadenv
 
 # Reset exit code to 0 for this script
 # (Short-circuit condition check & apply may change exit code)
