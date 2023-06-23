@@ -11,6 +11,42 @@ export PATH="$PATH:/usr/local/opt/qt/bin"
 # Simple script for network check
 [ -x "$(command -v curl)" ] && alias myip='curl ifconfig.co/'
 
+# Check SSL certificate expiry
+if [[ -x "$(command -v openssl)" ]]; then
+	function ssl_expiry() {
+		function show_usage() {
+			echo "Usage: ssl_expiry [domain|file] [domain or certificate file path]"
+		}
+
+		if [[ $# -lt 2 ]]; then
+			show_usage
+			return 1
+		fi
+
+		local type="$1"
+		local target="$2"
+		local expiration_date
+
+		if [[ "${type}" == "domain" ]]; then
+			expiration_date=$(echo | openssl s_client -connect "${target}:443" -servername "${target}" 2>/dev/null | openssl x509 -noout -enddate | awk -F '=' '{print $2}')
+		elif [[ "${type}" == "file" ]]; then
+			local cert_path="${target}"
+			expiration_date=$(openssl x509 -enddate -noout -in "${cert_path}" | awk -F '=' '{print $2}')
+		else
+			show_usage
+			return 1
+		fi
+
+		local expiration_timestamp=$(date -j -f "%b %d %T %Y %Z" "${expiration_date}" "+%s")
+
+		if [[ "${expiration_timestamp}" -lt $(date +%s) ]]; then
+	    	echo "The certificate has already expired. it was valid till: ${expiration_date}"
+		else
+			echo "The certificate is valid till: ${expiration_date}"
+		fi
+	}
+fi
+
 # Enable direnv hook
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 
