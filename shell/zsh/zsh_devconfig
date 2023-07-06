@@ -91,10 +91,16 @@ function _loadenv_complete() {
 	local completions=()
 
 	for file in ${rc_files[@]}; do
-		completions+=("${file#$rc_dir/}")
+		if [[ ${file#$rc_dir/} == $words[CURRENT]* ]]; then
+			completions+=("${file#$rc_dir/}")
+		fi
 	done
 
-	compadd -U -W "${completions[@]}"
+	if [[ ${#completions[@]} -eq 1 ]]; then
+		compadd "${completions[1]}"
+	else
+		compadd -U -M 'm:{a-zA-Z}={A-Za-z}' -W "${completions[@]}"
+	fi
 }
 compdef _loadenv_complete loadenv
 
