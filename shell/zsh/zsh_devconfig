@@ -79,28 +79,27 @@ fi
 	&& export GOPATH="$HOME/Workspace/go" && export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
 # add environment script sourcing function
-export RC_DIR="$HOME/Workspace/.envscripts"
+export ENV_DIR="$HOME/Workspace/.envscripts"
 
 function loadenv() {
-	source "$RC_DIR/$1"
+	local env_dir=${ENV_DIR:-$HOME/.env}
+	local file=$1
+	local args=("${@:2}")
+	source "$env_dir/$file" "${args[@]}"
 }
 function _loadenv_complete() {
-	local rc_dir=${RC_DIR:-$HOME/.rc}
-	local search_dir=${1:-$rc_dir}
-	local rc_files=(${(f)"$(find $search_dir -name '*.rc' -o -name '*.sh')"})
+	local env_dir=${ENV_DIR:-$HOME/.env}
+	local search_dir=${1:-$env_dir}
+	local env_files=(${(f)"$(find $search_dir -name '*.env' -o -name '*.rc' -o -name '*.sh')"})
 	local completions=()
 
-	for file in ${rc_files[@]}; do
-		if [[ ${file#$rc_dir/} == $words[CURRENT]* ]]; then
-			completions+=("${file#$rc_dir/}")
+	for file in ${env_files[@]}; do
+		if [[ ${file#$env_dir/} == $words[CURRENT]* ]]; then
+			completions+=("${file#$env_dir/}")
 		fi
 	done
 
-	if [[ ${#completions[@]} -eq 1 ]]; then
-		compadd "${completions[1]}"
-	else
-		compadd -U -M 'm:{a-zA-Z}={A-Za-z}' -W "${completions[@]}"
-	fi
+	compadd -a completions
 }
 compdef _loadenv_complete loadenv
 
