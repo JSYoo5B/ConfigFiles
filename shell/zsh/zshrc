@@ -4,6 +4,15 @@
 # Enable homebrew when it were installed on /opt/homebrew
 if [[ $OSTYPE == darwin* ]]; then
 	[ -f /opt/homebrew/bin/brew ] && eval $(/opt/homebrew/bin/brew shellenv)
+	brew_prefix=$(brew --prefix)
+	coreutils_path="$brew_prefix/opt/coreutils/libexec/gnubin"
+	[ -d $coreutils_path ] && PATH="$coreutils_path:$PATH"
+	indent_path="$brew_prefix/opt/gnu-indent/libexec/gnubin"
+	[ -d $indent_path ] && PATH="$indent_path:$PATH"
+	getopt_path="$brew_prefix/opt/gnu-getopt/bin"
+	[ -d $getopt_path ] && PATH="$getopt_path:$PATH"
+	coreutils_man_path="$brew_prefix/opt/coreutils/libexec/gnuman"
+	[ -d $coreutils_man_path ] && MANPATH="$coreutils_man_path:$MANPATH"
 fi
 
 ############################################################################
