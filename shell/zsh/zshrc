@@ -1,18 +1,119 @@
 ############################################################################
 ## System shell configuration (system-dependent config before zsh)         #
 ############################################################################
-# Enable homebrew when it were installed on /opt/homebrew
 if [[ $OSTYPE == darwin* ]]; then
+	# Enable homebrew when it were installed on /opt/homebrew
 	[ -f /opt/homebrew/bin/brew ] && eval $(/opt/homebrew/bin/brew shellenv)
 	brew_prefix=$(brew --prefix)
+
+	## To replace binary to linux version, install followings by brew
+	## brew install coreutils findutils gnu-tar gnu-sed gawk grep
+	## brew install gnutls gnu-indent gnu-getopt gnu-time gnu-units gnu-which
+
+	# coreutils binary
 	coreutils_path="$brew_prefix/opt/coreutils/libexec/gnubin"
 	[ -d $coreutils_path ] && PATH="$coreutils_path:$PATH"
+	unset coreutils_path
+	# coreutils manpage
+	coreutils_manpath="$brew_prefix/opt/coreutils/libexec/gnuman"
+	[ -d $coreutils_manpath ] && MANPATH="$coreutils_manpath:$MANPATH"
+	unset coreutils_manpath
+
+	# findutils binary
+	findutils_path="$brew_prefix/opt/findutils/libexec/gnubin"
+	[ -d $findutils_path ] && PATH="$findutils_path:$PATH"
+	unset findutils_path
+	# findutils manpage
+	findutils_manpath="$brew_prefix/opt/findutils/libexec/gnuman"
+	[ -d $findutils_manpath ] && MANPATH="$findutils_manpath:$MANPATH"
+	unset findutils_manpath
+
+	# gnu-tar binary
+	tar_path="$brew_prefix/opt/gnu-tar/libexec/gnubin"
+	[ -d $tar_path ] && PATH="$tar_path:$PATH"
+	unset tar_path
+	# gnu-tar manpath
+	tar_manpath="$brew_prefix/opt/gnu-tar/libexec/gnuman"
+	[ -d $tar_manpath ] && MANPATH="$tar_manpath:$MANPATH"
+	unset tar_manpath
+
+	# gnu-sed binary
+	sed_path="$brew_prefix/opt/gnu-sed/libexec/gnubin"
+	[ -d $sed_path ] && PATH="$sed_path:$PATH"
+	unset sed_path
+	# gnu-sed manpage
+	sed_manpath="$brew_prefix/opt/gnu-sed/libexec/gnuman"
+	[ -d $sed_manpath ] && MANPATH="$sed_manpath:$MANPATH"
+	unset sed_manpath
+
+	# gawk binary
+	awk_path="$brew_prefix/opt/gawk/libexec/gnubin"
+	[ -d $awk_path ] && PATH="$awk_path:$PATH"
+	unset awk_path
+	# gawk manpage
+	awk_manpath="$brew_prefix/opt/gawk/libexec/gnuman"
+	[ -d $awk_manpath ] && MANPATH="$awk_manpath:$MANPATH"
+	unset awk_manpath
+
+	# grep binary
+	grep_path="$brew_prefix/opt/grep/libexec/gnubin"
+	[ -d $grep_path ] && PATH="$grep_path:$PATH"
+	unset grep_path
+	# grep manpage
+	grep_manpath="$brew_prefix/opt/grep/libexec/gnuman"
+	[ -d $grep_manpath ] && MANPATH="$grep_manpath:$MANPATH"
+	unset grep_manpath
+
+	# gnutls binary
+	gnutls_path="$brew_prefix/opt/gnutls/bin"
+	[ -d $gnutls_path ] && PATH="$gnutls_path:$PATH"
+	unset gnutls_path
+	# gnutls manpage
+	gnutls_manpath="$brew_prefix/opt/gnutls/share/man"
+	[ -d $gnutls_manpath ] && MANPATH="$gnutls_manpath:$MANPATH"
+	unset gnutls_manpath
+
+	# gnu-indent binary
 	indent_path="$brew_prefix/opt/gnu-indent/libexec/gnubin"
 	[ -d $indent_path ] && PATH="$indent_path:$PATH"
+	unset indent_path
+	# gnu-indent manpage
+	indent_manpath="$brew_prefix/opt/gnu-indent/libexec/gnuman"
+	[ -d $indent_manpath ] && MANPATH="$indent_manpath:$MANPATH"
+	unset indent_manpath
+
+	# gnu-getopt binary
 	getopt_path="$brew_prefix/opt/gnu-getopt/bin"
 	[ -d $getopt_path ] && PATH="$getopt_path:$PATH"
-	coreutils_man_path="$brew_prefix/opt/coreutils/libexec/gnuman"
-	[ -d $coreutils_man_path ] && MANPATH="$coreutils_man_path:$MANPATH"
+	unset getopt_path
+	# gnu-getopt manpage
+	getopt_manpath="$brew_prefix/opt/gnu-getopt/share/man"
+	[ -d $getopt_manpath ] && MANPATH="$getopt_manpath:$MANPATH"
+	unset getopt_manpath
+
+	# gnu-time binary
+	time_path="$brew_prefix/opt/gnu-time/libexec/gnubin"
+	[ -d $time_path ] && PATH="$time_path:$PATH"
+	unset time_path
+	# gnu-time does not have manpage
+
+	# gnu-units binary
+	units_path="$brew_prefix/opt/gnu-units/libexec/gnubin"
+	[ -d $units_path ] && PATH="$units_path:$PATH"
+	unset units_path
+	# gnu-units manpage
+	units_manpath="$brew_prefix/opt/gnu-units/libexec/gnuman"
+	[ -d $units_manpath ] && MANPATH="$units_manpath:$MANPATH"
+	unset units_manpath
+
+	# gnu-which binary
+	which_path="$brew_prefix/opt/gnu-which/libexec/gnubin"
+	[ -d $which_path ] && PATH="$which_path:$PATH"
+	unset which_path
+	# gnu-which manpage
+	which_manpath="$brew_prefix/opt/gnu-which/libexec/gnuman"
+	[ -d $which_manpath ] && MANPATH="$which_manpath:$MANPATH"
+	unset which_manpath
 fi
 
 ############################################################################
@@ -31,7 +132,6 @@ plugins=(
   git sudo command-not-found
 #  zsh-completions
   fast-syntax-highlighting
-  alias-tips
   autojump
   tmux tmuxinator
 )
